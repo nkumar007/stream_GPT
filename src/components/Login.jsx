@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Header } from "./Header";
+import { checkValidation } from "../utils/validateForm";
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const emailRef = useRef(null);
+  const passRef = useRef(null);
+
+  const handleValidation = () => {
+    console.log(checkValidation(emailRef.current.value, passRef.current.value));
+  };
   return (
     <div className="relative h-screen w-screen overflow-hidden">
       <Header />
@@ -11,7 +18,10 @@ const Login = () => {
           alt="background_image"
         />
       </div>
-      <form className="w-3/12 absolute p-12 bg-[rgba(0,0,0,.75)] text-white my-36 mx-auto right-0 left-0 ">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="w-3/12 absolute p-12 bg-[rgba(0,0,0,.75)] text-white my-36 mx-auto right-0 left-0 "
+      >
         <h2 className="text-3xl mb-6 font-bold">
           {isSignInForm ? "Sign In" : "Sign Up"}
         </h2>
@@ -24,16 +34,19 @@ const Login = () => {
             />
           )}
           <input
+            ref={emailRef}
             type="text"
             placeholder="Email or phone number"
             className="p-3 bg-[#333] outline outline-0 rounded-md"
           />
           <input
+            ref={passRef}
             type="password"
             placeholder="Password"
             className="p-3 bg-[#333] outline outline-0 rounded-md"
           />
           <input
+            onClick={handleValidation}
             type="submit"
             className=" bg-red-600 p-3 cursor-pointer mt-6 rounded-md"
             value={isSignInForm ? "Sign In" : "Sign Up"}
