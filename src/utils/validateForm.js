@@ -5,8 +5,8 @@ export const checkValidation = (email, password) => {
     password
   );
 
-  if (!emailValidation) return "Email provided is not valid";
-  if (!passwordValidation) return "Password is not valid";
+  if (!emailValidation) return "Email  is not valid";
+  else if (!passwordValidation) return "Password is not valid";
 
   return null;
 };

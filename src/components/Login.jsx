@@ -3,11 +3,18 @@ import { Header } from "./Header";
 import { checkValidation } from "../utils/validateForm";
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const emailRef = useRef(null);
   const passRef = useRef(null);
 
   const handleValidation = () => {
-    console.log(checkValidation(emailRef.current.value, passRef.current.value));
+    const message = checkValidation(
+      emailRef.current.value,
+      passRef.current.value
+    );
+    console.log(message);
+    setErrorMessage(message);
   };
   return (
     <div className="relative h-screen w-screen overflow-hidden">
@@ -39,12 +46,16 @@ const Login = () => {
             placeholder="Email or phone number"
             className="p-3 bg-[#333] outline outline-0 rounded-md"
           />
+
           <input
             ref={passRef}
             type="password"
             placeholder="Password"
             className="p-3 bg-[#333] outline outline-0 rounded-md"
           />
+
+          <p className="text-sm text-red-600">{errorMessage}</p>
+
           <input
             onClick={handleValidation}
             type="submit"
