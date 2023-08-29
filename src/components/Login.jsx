@@ -140,16 +140,18 @@ const Login = () => {
             value={isSignInForm ? "Sign In" : "Sign Up"}
           />
           {isSignInForm && (
-            <div className="flex justify-between items-center text-gray-400">
+            <div className="flex text-xs justify-between items-center text-gray-400">
               <label>
                 <input type="checkbox" />
                 <span> Remember me</span>
               </label>
-              <span>Need help?</span>
+              <span className="hover:underline text-xs cursor-pointer">
+                <a href="https://www.netflix.com/LoginHelp">Need help?</a>
+              </span>
             </div>
           )}
 
-          <div className="text-gray-400 text-sm gap-4 flex flex-col">
+          <div className="text-gray-400 text-xs gap-4 flex flex-col">
             <div>
               {isSignInForm ? "New to Netflix?" : "Already a user?"}{" "}
               <span
