@@ -6,8 +6,11 @@ import { checkValidation } from "../utils/validateForm";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -15,8 +18,10 @@ const Login = () => {
 
   const emailRef = useRef(null);
   const passRef = useRef(null);
+  const nameRef = useRef(null);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleValidation = () => {
     const message = checkValidation(
@@ -37,9 +42,29 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user);
-          navigate("/browse");
-          // ...
+          updateProfile(user, {
+            displayName: nameRef.current.value,
+            photoURL: "https://avatars.githubusercontent.com/u/52521468?v=4",
+          })
+            .then(() => {
+              // Profile updated!
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+
+              navigate("/browse");
+            })
+            .catch((error) => {
+              // An error occurred
+              // ...
+              setErrorMessage(error, "Error while updating user");
+            });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -56,7 +81,6 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user);
           navigate("/browse");
 
           // ...
@@ -87,6 +111,7 @@ const Login = () => {
         <div className="flex flex-col gap-4 opacity-100">
           {!isSignInForm && (
             <input
+              ref={nameRef}
               type="text"
               placeholder="Name"
               className="p-3 bg-[#333] outline outline-0 rounded-md"
