@@ -11,6 +11,7 @@ import {
 import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { Netflix_background } from "../utils/constants";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -57,8 +58,6 @@ const Login = () => {
                   photoURL: photoURL,
                 })
               );
-
-              navigate("/browse");
             })
             .catch((error) => {
               // An error occurred
@@ -81,8 +80,6 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          navigate("/browse");
-
           // ...
         })
         .catch((error) => {
@@ -96,10 +93,7 @@ const Login = () => {
     <div className="relative h-screen w-screen overflow-hidden">
       <Header />
       <div className="absolute  object-cover transform scale-105 brightness-75">
-        <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/00103100-5b45-4d4f-af32-342649f1bda5/64774cd8-5c3a-4823-a0bb-1610d6971bd4/IN-en-20230821-popsignuptwoweeks-perspective_alpha_website_small.jpg"
-          alt="background_image"
-        />
+        <img src={Netflix_background} alt="background_image" />
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}

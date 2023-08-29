@@ -1,25 +1,19 @@
 import { useState } from "react";
 import { Header } from "./Header";
 import { signOut } from "firebase/auth";
-
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { removeUser } from "../utils/userSlice";
+import { useSelector } from "react-redux";
 
 const Browse = () => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+
   const user = useSelector((store) => store.user);
 
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        console.log("You were signed out");
-        dispatch(removeUser());
-        navigate("/");
+        console.log("sign out successful");
       })
       .catch((error) => {
         // An error happened.
