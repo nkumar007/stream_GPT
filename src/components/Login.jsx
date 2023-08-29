@@ -1,6 +1,14 @@
+/* eslint-disable no-unused-vars */
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "./Header";
 import { checkValidation } from "../utils/validateForm";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -8,13 +16,57 @@ const Login = () => {
   const emailRef = useRef(null);
   const passRef = useRef(null);
 
+  const navigate = useNavigate();
+
   const handleValidation = () => {
     const message = checkValidation(
       emailRef.current.value,
       passRef.current.value
     );
-    console.log(message);
     setErrorMessage(message);
+
+    if (message) return;
+
+    // Sign In / Sign Up user
+    if (!isSignInForm) {
+      createUserWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passRef.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+          // ..
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passRef.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
+
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + "-" + errorMessage);
+        });
+    }
   };
   return (
     <div className="relative h-screen w-screen overflow-hidden">
