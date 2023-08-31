@@ -1,22 +1,23 @@
 /* eslint-disable react/prop-types */
-import { useEffect } from "react";
-import { options } from "../utils/constants";
+
+import { useSelector } from "react-redux";
+import useMovieTrailer from "../hooks/useMovieTrailer";
 
 const VideoContainer = ({ movieID }) => {
-  const getMovieVideos = async () => {
-    const data = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieID}/videos?language=en-US`,
-      options
-    );
-    const json = await data.json();
-    console.log(json);
-  };
+  const trailerKey = useSelector((store) => store.movies?.trailerKey);
 
-  useEffect(() => {
-    getMovieVideos();
-  }, []);
+  useMovieTrailer(movieID);
 
-  return <div>VideoContainer</div>;
+  return (
+    <div className="w-screen">
+      <iframe
+        className="w-screen aspect-video"
+        src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=1&controls=0&modestbranding=1si=zyYRpUOvna8SdYhG`}
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      ></iframe>
+    </div>
+  );
 };
 
 export default VideoContainer;
