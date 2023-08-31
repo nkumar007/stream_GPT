@@ -4,6 +4,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useSelector } from "react-redux";
 import useNowPlayingMovies from "../hooks/useNowPlayingMovies";
+import MainContainer from "./MainContainer";
+import { SecondaryContainer } from "./SecondaryContainer";
 
 const Browse = () => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -43,6 +45,8 @@ const Browse = () => {
           </div>
         )}
       </div>
+      <MainContainer />
+      <SecondaryContainer />
     </div>
   );
 };
