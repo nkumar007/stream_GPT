@@ -1,10 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useSelector } from "react-redux";
+
 import MovieCard from "./MovieCard";
 
-const MovieList = ({ category }) => {
-  const movies = useSelector((store) => store.movies?.nowPlayingMovies);
-
+const MovieList = ({ category, movies }) => {
   return (
     <div className="px-6">
       <h2 className="text-3xl py-4 text-white">{category}</h2>
