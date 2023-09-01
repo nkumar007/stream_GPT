@@ -11,14 +11,13 @@ const useMovieTrailer = (movieID) => {
       options
     );
     const json = await data.json();
-    console.log(json.results);
+
     const trailerData = json.results.filter(
       (video) => video.type === "Trailer"
     );
 
     const trailer = trailerData.length ? trailerData[0] : json.results[0];
 
-    console.log(trailer);
     dispatch(addTrailerKey(trailer?.key));
   };
 

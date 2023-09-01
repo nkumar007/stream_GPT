@@ -28,7 +28,7 @@ const Browse = () => {
   useNowPlayingMovies();
 
   return (
-    <div className="relative">
+    <div className="relative overflow-x-hidden">
       <Header />
       <div
         className="absolute group right-4 z-10 py-6 px-6 cursor-pointer "

@@ -13,7 +13,7 @@ const VideoInfo = ({ movieTitle, movieOverview }) => {
     window.open(youtubeURL, "_blank");
   };
   return (
-    <div className="px-10 py-[25%] absolute bg-gradient-to-r from-black  text-white w-screen aspect-video h-[20%]">
+    <div className="px-10 py-[25%] absolute bg-gradient-to-r from-black  text-white w-screen aspect-video">
       <h1 className="text-4xl font-bold">{movieTitle}</h1>
 
       <p

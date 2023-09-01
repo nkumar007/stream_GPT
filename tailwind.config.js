@@ -9,5 +9,22 @@ export default {
       },
     },
   },
-  plugins: [],
+
+  corePlugins: {
+    scrollbarWidth: false,
+  },
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".no-scrollbar::-webkit-scrollbar": {
+          display: "none",
+        },
+        ".no-scrollbar": {
+          scrollbarWidth: "none",
+          "-ms-overflow-style": "none",
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 };
