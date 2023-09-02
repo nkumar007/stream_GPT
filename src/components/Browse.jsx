@@ -1,5 +1,4 @@
 import { Header } from "./Header";
-
 import useNowPlayingMovies from "../hooks/useNowPlayingMovies";
 import MainContainer from "./MainContainer";
 import { SecondaryContainer } from "./SecondaryContainer";
@@ -12,7 +11,6 @@ import { useSelector } from "react-redux";
 const Browse = () => {
   const searchVisible = useSelector((store) => store.gpt.isSearchVisible);
 
-  console.log(searchVisible);
   useNowPlayingMovies();
   useTopRatedMovies();
   useUpcomingMovies();

@@ -10,7 +10,7 @@ const useNowPlayingMovies = () => {
   const getNowPlayingMovies = async () => {
     const data = await fetch(url, options);
     const json = await data.json();
-    console.log(json.results);
+
     dispatch(addNowPlayingMovies(json.results));
   };
 
