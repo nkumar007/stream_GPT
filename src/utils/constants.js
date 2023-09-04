@@ -17,3 +17,5 @@ export const SUPPORTED_LANGUAGES = [
   { identifier: "hindi", name: "Hindi" },
   { identifier: "spanish", name: "Spanish" },
 ];
+
+export const OPENAI_KEY = "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";
