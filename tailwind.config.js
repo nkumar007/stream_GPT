@@ -7,6 +7,9 @@ export default {
         // If you want it to be a background color
         "custom-gray": "rgba(109, 109, 110, 0.7)",
       },
+      backgroundImage: {
+        "gpt-background": "url('/src/assets/login_background.jpeg')",
+      },
     },
   },
 

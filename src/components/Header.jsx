@@ -6,15 +6,22 @@ import { addUser, removeUser } from "../utils/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { showGptSearch } from "../utils/gptSlice";
+import { SUPPORTED_LANGUAGES } from "../utils/constants";
+import { changeLanguage } from "../utils/configSlice";
 
 export const Header = () => {
   const user = useSelector((store) => store.user);
+  const searchVisible = useSelector((store) => store.gpt.isSearchVisible);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleView = () => {
     dispatch(showGptSearch());
+  };
+
+  const handleSelection = (e) => {
+    dispatch(changeLanguage(e.target.value));
   };
 
   const handleSignOut = () => {
@@ -58,11 +65,24 @@ export const Header = () => {
 
       {user && (
         <>
+          {searchVisible && (
+            <select
+              className="absolute outline-none right-60 py-2 px-4 rounded-sm bg-black text-white"
+              onChange={handleSelection}
+            >
+              {SUPPORTED_LANGUAGES.map((lang) => (
+                <option value={lang.identifier} key={lang.identifier}>
+                  {lang.name}
+                </option>
+              ))}
+            </select>
+          )}
+
           <button
             className="bg-[#75a99c] px-3 py-2 text-white rounded-lg absolute right-36"
             onClick={handleView}
           >
-            GPT Search
+            {searchVisible ? "Home" : "GPT Search"}
           </button>
           <div
             className="absolute group right-4 top-0 z-10 py-6  px-6 cursor-pointer flex"
