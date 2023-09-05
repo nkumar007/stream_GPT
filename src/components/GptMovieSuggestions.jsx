@@ -1,19 +1,20 @@
 import { useSelector } from "react-redux";
-import MovieCard from "./MovieCard";
+import MovieList from "./MovieList";
 
 const GptMovieSuggestions = () => {
-  const movies = useSelector((store) => store.gpt.movieNames);
+  const { movieResults, movieNames } = useSelector((store) => store.gpt);
+  if (!movieNames) return null;
+
   return (
-    <div className="bg-black text-white bg-opacity-90 px-6 w-screen h-screen py-4">
+    <div className="p-4 m-4 bg-black text-white bg-opacity-90">
       <div>
-        <div className="flex ">
-          <div className="flex flex-wrap gap-4">
-            {movies &&
-              movies.map(({ id, poster_path }) => (
-                <MovieCard key={id} poster_path={poster_path} />
-              ))}
-          </div>
-        </div>
+        {movieNames.map((movieName, index) => (
+          <MovieList
+            key={movieName}
+            title={movieName}
+            movies={movieResults[index]}
+          />
+        ))}
       </div>
     </div>
   );
