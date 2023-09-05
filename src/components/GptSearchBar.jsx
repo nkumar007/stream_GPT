@@ -3,12 +3,13 @@ import lang from "../utils/languageConstants";
 import { useRef } from "react";
 import openai from "../utils/openAI";
 import { options } from "../utils/constants";
-import { addGptSearchResults } from "../utils/gptSlice";
+import { addGptMovieResult, clearGptMovieResult } from "../utils/gptSlice";
 
 const GptSearchBar = () => {
   const searchRef = useRef(null);
 
   const langKey = useSelector((store) => store.config.lang);
+  const movies = useSelector((store) => store.gpt.movieNames);
   const dispatch = useDispatch();
 
   const fetchMovieDetails = async (movie) => {
@@ -26,7 +27,7 @@ const GptSearchBar = () => {
     const query =
       "Act as a Movie Recommendation system and suggest some movies for the query : " +
       searchRef.current.value +
-      ". only give me names of movies, comma seperated like the example result given ahead. Example Result: movie 1, movie 2, movie 3,movie 4,movie 5";
+      ". only give me names of movies for the exact query and similar movies, comma seperated like the example result given ahead. Example Result: movie 1, movie 2, movie 3,movie 4,movie 5 and so on.";
     const gptResults = await openai.chat.completions.create({
       messages: [{ role: "user", content: query }],
       model: "gpt-3.5-turbo",
@@ -41,26 +42,19 @@ const GptSearchBar = () => {
 
     const promiseResults = await Promise.all(tmdbResults);
     console.log(promiseResults);
-    // const filteredResults = promiseResults.filter((movie) => movie !== null);
 
-    const filteredResults = promiseResults
-      .map((movies, index) => {
-        // Get the movie suggestion for this set of TMDB results
-        const suggestedMovieName = movieSuggestions[index].trim().toLowerCase();
-
-        // Find the exact match in the TMDB results
-        return movies.find(
-          (movieDetail) =>
-            movieDetail.title.toLowerCase() === suggestedMovieName
-        );
+    dispatch(
+      addGptMovieResult({
+        movieNames: movieSuggestions,
+        movieResults: promiseResults,
       })
-      .filter((movie) => movie); // Filter out any undefined/null results
-    dispatch(addGptSearchResults(filteredResults));
+    );
+
     searchRef.current.value = "";
   };
 
   return (
-    <div className="pt-[35%] md:pt-[10%] flex justify-center">
+    <div className="pt-[35%] md:pt-[10%] flex justify-center ">
       <form
         className="w-full md:w-1/2 bg-black grid grid-cols-12"
         onSubmit={(e) => e.preventDefault()}
@@ -68,15 +62,24 @@ const GptSearchBar = () => {
         <input
           ref={searchRef}
           type="text"
-          className=" p-4 m-4 col-span-9 outline-none"
+          className=" p-4 m-4 col-span-8 outline-none"
           placeholder={lang[langKey].gptSearchPlaceholder}
         />
-        <button
-          className="col-span-3 m-4 py-2 px-4 bg-red-700 text-white rounded-lg"
-          onClick={handleSearch}
-        >
-          {lang[langKey].search}
-        </button>
+        <div className="col-span-4 flex items-center gap-3">
+          <button
+            className="py-2 px-4 bg-red-700 text-white rounded-lg"
+            onClick={handleSearch}
+          >
+            {lang[langKey].search}
+          </button>
+          <button
+            className="py-2 px-4 bg-gray-500 text-white rounded-lg disabled:opacity-50"
+            disabled={!movies || movies.length === 0}
+            onClick={() => dispatch(clearGptMovieResult())}
+          >
+            Clear Results
+          </button>
+        </div>
       </form>
     </div>
   );
